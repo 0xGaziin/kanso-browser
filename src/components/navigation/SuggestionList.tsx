@@ -22,7 +22,7 @@ export function SuggestionList({ id, suggestions, activeIndex, onPick }: Suggest
     <ul
       id={id}
       role="listbox"
-      className="h-full w-full overflow-hidden border border-[#2C2C35] bg-[#18181D] py-1"
+      className="h-full w-full overflow-hidden border border-line bg-surface py-1"
     >
       {suggestions.map((suggestion, index) => {
         const Icon = ICONS[suggestion.kind];
@@ -38,14 +38,14 @@ export function SuggestionList({ id, suggestions, activeIndex, onPick }: Suggest
               onPick(suggestion.target);
             }}
             style={{ height: SUGGESTION_ROW_HEIGHT }}
-            className={`flex cursor-pointer items-center gap-2.5 px-3 text-xs hover:bg-[#1E1E24] ${
-              index === activeIndex ? "bg-[#222229]" : ""
+            className={`flex cursor-pointer items-center gap-2.5 px-3 text-xs hover:bg-hover ${
+              index === activeIndex ? "bg-active" : ""
             }`}
           >
-            <Icon className="h-3.5 w-3.5 shrink-0 text-[#9A9AA6]" />
-            <span className="truncate text-[#F4F4F6]">{suggestion.label}</span>
+            <Icon className="h-3.5 w-3.5 shrink-0 text-muted" />
+            <span className="truncate text-fg">{suggestion.label}</span>
             {suggestion.detail && (
-              <span className="truncate text-[11px] text-[#9A9AA6]">{suggestion.detail}</span>
+              <span className="truncate text-[11px] text-muted">{suggestion.detail}</span>
             )}
           </li>
         );

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
+import { useTheme } from "./hooks/useTheme";
 
 // Must match OVERLAY_LABEL_PREFIX in src-tauri/src/overlay.rs.
 const OVERLAY_LABEL_PREFIX = "suggestions";
@@ -14,6 +15,9 @@ const SuggestionsOverlay = lazy(() =>
 
 // Selects the entry component based on the current Tauri webview label.
 export function Root() {
+  // Every webview has its own document, so each one applies the theme itself.
+  useTheme();
+
   const isOverlay = getCurrentWebview().label.startsWith(OVERLAY_LABEL_PREFIX);
 
   return (
