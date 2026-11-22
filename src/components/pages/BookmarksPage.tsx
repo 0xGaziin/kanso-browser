@@ -1,21 +1,23 @@
 import { X } from "lucide-react";
+import { useTranslation } from "../../i18n/useTranslation";
 import { useBookmarksStore } from "../../store/useBookmarksStore.ts";
 import { useBrowserStore } from "../../store/useBrowserStore.ts";
 import { EmptyState, PageShell } from "./PageShell.tsx";
 import { SiteIcon } from "./SiteIcon.tsx";
 
 export function BookmarksPage() {
+  const { t } = useTranslation();
   const items = useBookmarksStore((state) => state.items);
   const remove = useBookmarksStore((state) => state.remove);
   const navigate = useBrowserStore((state) => state.navigate);
 
   return (
     <PageShell
-      title="Bookmarks"
-      description="Use the star in the address bar to save the page you are on."
+      title={t("bookmarks")}
+      description={t("bookmarksHint")}
     >
       {items.length === 0 ? (
-        <EmptyState message="No bookmarks yet." />
+        <EmptyState message={t("noBookmarks")} />
       ) : (
         <div className="flex flex-col gap-1">
           {items.map((item) => (
@@ -38,7 +40,7 @@ export function BookmarksPage() {
               <button
                 type="button"
                 onClick={() => remove(item.id)}
-                aria-label="Remove bookmark"
+                aria-label={t("removeBookmark")}
                 className="rounded-md p-1 text-muted opacity-0 transition hover:bg-active hover:text-fg group-hover:opacity-100 focus:opacity-100"
               >
                 <X className="h-3.5 w-3.5" />

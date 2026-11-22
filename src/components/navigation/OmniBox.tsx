@@ -1,12 +1,14 @@
 import { ChangeEvent, FormEvent, KeyboardEvent, MouseEvent, useRef, useState } from "react";
 import { Search, Star } from "lucide-react";
 import { useSuggestions } from "../../hooks/useSuggestions";
+import { useTranslation } from "../../i18n/useTranslation";
 import { useSuggestionsOverlay } from "../../hooks/useSuggestionsOverlay";
 import { useBookmarksStore } from "../../store/useBookmarksStore";
 import { normalizeUrl, useBrowserStore } from "../../store/useBrowserStore";
 import { isInternalUrl } from "../../utils/internalPages";
 
 export function OmniBox() {
+  const { t } = useTranslation();
   const addressInput = useBrowserStore((state) => state.addressInput);
   const setAddressInput = useBrowserStore((state) => state.setAddressInput);
   const setAddressEditing = useBrowserStore((state) => state.setAddressEditing);
@@ -114,15 +116,15 @@ export function OmniBox() {
           onBlur={handleBlur}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Search or enter address"
+          placeholder={t("searchPlaceholder")}
           className="w-full select-text bg-transparent text-xs text-fg placeholder-muted outline-none"
         />
         {canBookmark && (
           <button
             type="button"
             onClick={handleBookmarkClick}
-            aria-label={isBookmarked ? "Remove bookmark" : "Bookmark this page"}
-            title={isBookmarked ? "Remove bookmark" : "Bookmark this page"}
+            aria-label={isBookmarked ? t("removeBookmark") : t("addBookmark")}
+            title={isBookmarked ? t("removeBookmark") : t("addBookmark")}
             className="shrink-0 rounded p-0.5 transition-colors hover:bg-line"
           >
             <Star

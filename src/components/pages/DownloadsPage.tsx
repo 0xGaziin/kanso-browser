@@ -1,12 +1,14 @@
 import { File, Loader2 } from "lucide-react";
+import { TranslationKey } from "../../i18n/translations";
+import { useTranslation } from "../../i18n/useTranslation";
 import { browserApi } from "../../services/browserApi";
 import { DownloadItem, useDownloadsStore } from "../../store/useDownloadsStore";
 import { EmptyState, PageShell, SECONDARY_BUTTON_CLASS } from "./PageShell.tsx";
 
-const STATUS_LABEL: Record<DownloadItem["status"], string> = {
-  downloading: "Downloading…",
-  completed: "Completed",
-  failed: "Failed",
+const STATUS_LABEL_KEYS: Record<DownloadItem["status"], TranslationKey> = {
+  downloading: "downloadDownloading",
+  completed: "downloadCompleted",
+  failed: "downloadFailed",
 };
 
 function reportError(action: string) {
@@ -14,14 +16,15 @@ function reportError(action: string) {
 }
 
 export function DownloadsPage() {
+  const { t, locale } = useTranslation();
   const items = useDownloadsStore((state) => state.items);
   const remove = useDownloadsStore((state) => state.remove);
   const clear = useDownloadsStore((state) => state.clear);
 
   return (
     <PageShell
-      title="Downloads"
-      description="Files are saved to your Downloads folder."
+      title={t("downloads")}
+      description={t("downloadsDescription")}
       actions={
         <button
           type="button"
@@ -29,12 +32,12 @@ export function DownloadsPage() {
           disabled={items.length === 0}
           className={SECONDARY_BUTTON_CLASS}
         >
-          Clear list
+          {t("clearList")}
         </button>
       }
     >
       {items.length === 0 ? (
-        <EmptyState message="Files you download will appear here." />
+        <EmptyState message={t("noDownloads")} />
       ) : (
         <div className="flex flex-col gap-2">
           {items.map((item) => (
@@ -57,7 +60,7 @@ export function DownloadsPage() {
                     item.status === "failed" ? "text-danger" : "text-muted"
                   }`}
                 >
-                  {STATUS_LABEL[item.status]} · {new Date(item.startedAt).toLocaleString()}
+                  {t(STATUS_LABEL_KEYS[item.status])} · {new Date(item.startedAt).toLocaleString(locale)}
                 </div>
               </div>
 
@@ -69,7 +72,7 @@ export function DownloadsPage() {
                       onClick={() => void browserApi.openDownload(item.path).catch(reportError("open"))}
                       className={SECONDARY_BUTTON_CLASS}
                     >
-                      Open
+                      {t("openFile")}
                     </button>
                     <button
                       type="button"
@@ -78,7 +81,7 @@ export function DownloadsPage() {
                       }
                       className={SECONDARY_BUTTON_CLASS}
                     >
-                      Show in folder
+                      {t("showInFolder")}
                     </button>
                   </>
                 )}
@@ -87,7 +90,7 @@ export function DownloadsPage() {
                   onClick={() => remove(item.id)}
                   className={SECONDARY_BUTTON_CLASS}
                 >
-                  Remove
+                  {t("remove")}
                 </button>
               </div>
             </div>

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Dark is the default. The light palette is applied by adding `theme-light` to <html> (see hooks/useTheme.ts). */
+/* Dark is the default. The light palette is applied by adding theme-light to <html> (see hooks/useTheme.ts). */
 :root {
   color-scheme: dark;
   --bg-chrome: #111114;

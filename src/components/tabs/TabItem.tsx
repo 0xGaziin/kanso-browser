@@ -1,6 +1,9 @@
 import { MouseEvent, PointerEvent, useEffect, useState } from "react";
 import { Globe, Loader2, Moon, Volume2, X } from "lucide-react";
+import { INTERNAL_PAGE_TITLE_KEYS } from "../../i18n/internalPageTitleKeys";
+import { useTranslation } from "../../i18n/useTranslation";
 import { Tab } from "../../types/browser";
+import { getInternalPage } from "../../utils/internalPages";
 
 interface TabItemProps {
   tab: Tab;
@@ -22,6 +25,11 @@ export function TabItem({
   onPointerDown,
 }: TabItemProps) {
   const [faviconError, setFaviconError] = useState(false);
+  const { t } = useTranslation();
+  const internalPage = getInternalPage(tab.url);
+  const displayTitle = internalPage
+    ? t(INTERNAL_PAGE_TITLE_KEYS[internalPage])
+    : tab.title || tab.url;
 
   // Reset error state on navigation so a new tab icon can load cleanly.
   useEffect(() => {
@@ -90,14 +98,14 @@ export function TabItem({
       onClick={() => onSelect(tab.id)}
       onAuxClick={handleAuxClick}
       onPointerDown={onPointerDown}
-      title={tab.title || tab.url}
+      title={displayTitle}
       className={`group relative flex h-7 items-center gap-2 rounded-md text-xs transition-colors ${containerDimensions} ${surfaceStyle} ${dragStyle}`}
     >
       <div className="flex min-w-0 items-center gap-2">
         {renderIcon()}
 
         {!tab.isPinned && (
-          <span className="truncate">{tab.title || tab.url}</span>
+          <span className="truncate">{displayTitle}</span>
         )}
       </div>
 
@@ -111,7 +119,7 @@ export function TabItem({
             <button
               type="button"
               onClick={handleCloseClick}
-              aria-label="Close tab"
+              aria-label={t("closeTab")}
               className="flex h-4 w-4 items-center justify-center rounded text-muted opacity-0 transition-opacity hover:bg-line hover:text-fg focus:opacity-100 group-hover:opacity-100"
             >
               <X className="h-3 w-3" />
