@@ -1,21 +1,43 @@
 @import "tailwindcss";
 
+/* Dark is the default. The light palette is applied by adding `theme-light` to <html> (see hooks/useTheme.ts). */
 :root {
+  color-scheme: dark;
   --bg-chrome: #111114;
   --bg-surface: #18181d;
   --bg-active: #222229;
+  --bg-hover: #1e1e24;
+  --bg-field: #141418;
   --border-subtle: #2c2c35;
   --text-primary: #f4f4f6;
   --text-muted: #9a9aa6;
   --accent: #34d399;
+  --danger: #f87171;
 }
 
 .theme-light {
+  color-scheme: light;
   --bg-chrome: #ecebe6;
   --bg-surface: #f5f4f0;
   --bg-active: #ffffff;
+  --bg-hover: #e5e3dc;
+  --bg-field: #ffffff;
   --border-subtle: #dcdad2;
   --text-primary: #18181b;
   --text-muted: #64646e;
   --accent: #059669;
+  --danger: #dc2626;
+}
+
+@theme inline {
+  --color-chrome: var(--bg-chrome);
+  --color-surface: var(--bg-surface);
+  --color-active: var(--bg-active);
+  --color-hover: var(--bg-hover);
+  --color-field: var(--bg-field);
+  --color-line: var(--border-subtle);
+  --color-fg: var(--text-primary);
+  --color-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
 }

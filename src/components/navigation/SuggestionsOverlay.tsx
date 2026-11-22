@@ -32,7 +32,7 @@ export function SuggestionsOverlay() {
   }, []);
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-[#18181D] select-none">
+    <div className="h-screen w-screen overflow-hidden bg-surface select-none">
       <SuggestionList
         id="omnibox-suggestions"
         suggestions={state.suggestions}

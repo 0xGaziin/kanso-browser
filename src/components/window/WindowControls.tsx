@@ -3,7 +3,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Copy, Minus, Square, X } from "lucide-react";
 
 const BUTTON_CLASS =
-  "flex h-9 w-[46px] items-center justify-center text-[#9A9AA6] transition-colors hover:bg-[#222229] hover:text-[#F4F4F6]";
+  "flex h-9 w-[46px] items-center justify-center text-muted transition-colors hover:bg-active hover:text-fg";
 
 function logError(action: string) {
   return (err: unknown) => console.error(`[Kanso] window ${action} error:`, err);
@@ -70,7 +70,7 @@ export function WindowControls() {
         onClick={() => void getCurrentWindow().close().catch(logError("close"))}
         aria-label="Close"
         title="Close"
-        className="flex h-9 w-11.5 items-center justify-center text-[#9A9AA6] transition-colors hover:bg-[#E81123] hover:text-white"
+        className="flex h-9 w-11.5 items-center justify-center text-muted transition-colors hover:bg-[#E81123] hover:text-white"
       >
         <X className="h-4 w-4" />
       </button>

@@ -40,21 +40,21 @@ export function DownloadsPage() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 px-4 py-3"
+              className="flex items-center gap-3 rounded-2xl border border-line bg-surface/60 px-4 py-3"
             >
               {item.status === "downloading" ? (
-                <Loader2 className="h-5 w-5 shrink-0 animate-spin text-emerald-400" />
+                <Loader2 className="h-5 w-5 shrink-0 animate-spin text-accent" />
               ) : (
-                <File className="h-5 w-5 shrink-0 text-zinc-400" />
+                <File className="h-5 w-5 shrink-0 text-muted" />
               )}
 
               <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-medium text-zinc-100" title={item.path}>
+                <div className="truncate text-sm font-medium text-fg" title={item.path}>
                   {item.fileName}
                 </div>
                 <div
                   className={`truncate text-[11px] ${
-                    item.status === "failed" ? "text-red-400" : "text-zinc-500"
+                    item.status === "failed" ? "text-danger" : "text-muted"
                   }`}
                 >
                   {STATUS_LABEL[item.status]} · {new Date(item.startedAt).toLocaleString()}

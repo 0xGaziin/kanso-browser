@@ -73,14 +73,14 @@ export function HistoryPage() {
         </button>
       }
     >
-      <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/80 px-3 py-2 focus-within:border-zinc-600">
-        <Search className="h-4 w-4 text-zinc-500" />
+      <div className="flex items-center gap-2 rounded-xl border border-line bg-surface/80 px-3 py-2 focus-within:border-accent/60">
+        <Search className="h-4 w-4 text-muted" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search history"
-          className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 outline-none"
+          className="w-full bg-transparent text-sm text-fg placeholder-muted outline-none"
         />
       </div>
 
@@ -91,15 +91,15 @@ export function HistoryPage() {
       ) : (
         groups.map(([label, items]) => (
           <section key={label} className="flex flex-col gap-1">
-            <h2 className="px-1 pb-1 text-xs font-medium tracking-wide text-zinc-400 uppercase">
+            <h2 className="px-1 pb-1 text-xs font-medium tracking-wide text-muted uppercase">
               {label}
             </h2>
             {items.map((entry) => (
               <div
                 key={entry.id}
-                className="group flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-zinc-900"
+                className="group flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-surface"
               >
-                <span className="w-12 shrink-0 text-[11px] text-zinc-500">
+                <span className="w-12 shrink-0 text-[11px] text-muted">
                   {new Date(entry.visitedAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -112,8 +112,8 @@ export function HistoryPage() {
                   className="flex min-w-0 flex-1 items-baseline gap-2 text-left"
                   title={entry.url}
                 >
-                  <span className="truncate text-sm text-zinc-100">{entry.title}</span>
-                  <span className="truncate text-[11px] text-zinc-500">
+                  <span className="truncate text-sm text-fg">{entry.title}</span>
+                  <span className="truncate text-[11px] text-muted">
                     {new URL(entry.url).hostname}
                   </span>
                 </button>
@@ -121,7 +121,7 @@ export function HistoryPage() {
                   type="button"
                   onClick={() => removeEntry(entry.id)}
                   aria-label="Remove from history"
-                  className="rounded-md p-1 text-zinc-500 opacity-0 transition hover:bg-zinc-800 hover:text-zinc-200 group-hover:opacity-100 focus:opacity-100"
+                  className="rounded-md p-1 text-muted opacity-0 transition hover:bg-active hover:text-fg group-hover:opacity-100 focus:opacity-100"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>

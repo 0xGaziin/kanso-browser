@@ -135,7 +135,7 @@ export function TabBar() {
         }}
         aria-label="New tab"
         title="New tab"
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#9A9AA6] transition-colors hover:bg-[#18181D] hover:text-[#F4F4F6]"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted transition-colors hover:bg-surface hover:text-fg"
       >
         <Plus className="h-4 w-4" />
       </button>

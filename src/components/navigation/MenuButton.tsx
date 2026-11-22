@@ -10,7 +10,7 @@ export function MenuButton() {
       }}
       aria-label="Menu"
       title="Menu"
-      className="rounded-md p-1.5 text-[#9A9AA6] transition-colors hover:bg-[#18181D] hover:text-[#F4F4F6]"
+      className="rounded-md p-1.5 text-muted transition-colors hover:bg-surface hover:text-fg"
     >
       <EllipsisVertical className="h-4 w-4" />
     </button>
