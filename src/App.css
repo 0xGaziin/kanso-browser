@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --bg-chrome: #111114;
+  --bg-surface: #18181d;
+  --bg-active: #222229;
+  --border-subtle: #2c2c35;
+  --text-primary: #f4f4f6;
+  --text-muted: #9a9aa6;
+  --accent: #34d399;
+}
+
+.theme-light {
+  --bg-chrome: #ecebe6;
+  --bg-surface: #f5f4f0;
+  --bg-active: #ffffff;
+  --border-subtle: #dcdad2;
+  --text-primary: #18181b;
+  --text-muted: #64646e;
+  --accent: #059669;
+}
