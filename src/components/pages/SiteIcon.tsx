@@ -12,7 +12,7 @@ export function SiteIcon({ url }: { url: string }) {
   }, [url]);
 
   if (!src || failed) {
-    return <Globe className="h-4 w-4 shrink-0 text-zinc-500" />;
+    return <Globe className="h-4 w-4 shrink-0 text-muted" />;
   }
 
   return (

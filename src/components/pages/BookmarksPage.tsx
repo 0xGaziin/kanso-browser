@@ -21,7 +21,7 @@ export function BookmarksPage() {
           {items.map((item) => (
             <div
               key={item.id}
-              className="group flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-zinc-900"
+              className="group flex items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-surface"
             >
               <SiteIcon url={item.url} />
               <button
@@ -30,8 +30,8 @@ export function BookmarksPage() {
                 className="flex min-w-0 flex-1 items-baseline gap-2 text-left"
                 title={item.url}
               >
-                <span className="truncate text-sm text-zinc-100">{item.title}</span>
-                <span className="truncate text-[11px] text-zinc-500">
+                <span className="truncate text-sm text-fg">{item.title}</span>
+                <span className="truncate text-[11px] text-muted">
                   {new URL(item.url).hostname}
                 </span>
               </button>
@@ -39,7 +39,7 @@ export function BookmarksPage() {
                 type="button"
                 onClick={() => remove(item.id)}
                 aria-label="Remove bookmark"
-                className="rounded-md p-1 text-zinc-500 opacity-0 transition hover:bg-zinc-800 hover:text-zinc-200 group-hover:opacity-100 focus:opacity-100"
+                className="rounded-md p-1 text-muted opacity-0 transition hover:bg-active hover:text-fg group-hover:opacity-100 focus:opacity-100"
               >
                 <X className="h-3.5 w-3.5" />
               </button>

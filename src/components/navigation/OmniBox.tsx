@@ -100,9 +100,9 @@ export function OmniBox() {
     <form ref={formRef} onSubmit={handleSubmit} className="flex flex-1 items-center">
       <div
         onClick={() => inputRef.current?.focus()}
-        className="flex h-8 w-full cursor-text items-center gap-2 rounded-lg border border-[#2C2C35] bg-[#18181D] px-3 focus-within:border-[#34D399]/60"
+        className="flex h-8 w-full cursor-text items-center gap-2 rounded-lg border border-line bg-surface px-3 focus-within:border-accent/60"
       >
-        <Search className="h-3.5 w-3.5 text-[#9A9AA6]" />
+        <Search className="h-3.5 w-3.5 text-muted" />
         <input
           ref={inputRef}
           type="text"
@@ -115,7 +115,7 @@ export function OmniBox() {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder="Search or enter address"
-          className="w-full select-text bg-transparent text-xs text-[#F4F4F6] placeholder-[#9A9AA6] outline-none"
+          className="w-full select-text bg-transparent text-xs text-fg placeholder-muted outline-none"
         />
         {canBookmark && (
           <button
@@ -123,11 +123,11 @@ export function OmniBox() {
             onClick={handleBookmarkClick}
             aria-label={isBookmarked ? "Remove bookmark" : "Bookmark this page"}
             title={isBookmarked ? "Remove bookmark" : "Bookmark this page"}
-            className="shrink-0 rounded p-0.5 transition-colors hover:bg-[#2C2C35]"
+            className="shrink-0 rounded p-0.5 transition-colors hover:bg-line"
           >
             <Star
               className={`h-3.5 w-3.5 ${
-                isBookmarked ? "fill-[#34D399] text-[#34D399]" : "text-[#9A9AA6]"
+                isBookmarked ? "fill-accent text-accent" : "text-muted"
               }`}
             />
           </button>

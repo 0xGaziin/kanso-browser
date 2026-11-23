@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowRight, RotateCw } from "lucide-react";
 import { useBrowserStore } from "../../store/useBrowserStore";
 
 const BUTTON_CLASS =
-  "rounded-md p-1.5 text-[#9A9AA6] transition-colors hover:bg-[#18181D] hover:text-[#F4F4F6] disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-[#9A9AA6]";
+  "rounded-md p-1.5 text-muted transition-colors hover:bg-surface hover:text-fg disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-muted";
 
 export function NavControls() {
   const goBack = useBrowserStore((state) => state.goBack);
