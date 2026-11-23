@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use tauri::menu::{ContextMenu, Menu, MenuEvent, MenuItem, PredefinedMenuItem};
 use tauri::{AppHandle, Emitter, Wry};
 
@@ -7,13 +8,24 @@ use crate::tabs::main_window;
 const MENU_ACTION_EVENT: &str = "menu:action";
 const QUIT_ID: &str = "quit";
 
-fn build_browser_menu(app: &AppHandle) -> Result<Menu<Wry>, BrowserError> {
-    let new_tab = MenuItem::with_id(app, "new-tab", "New tab", true, None::<&str>)?;
-    let history = MenuItem::with_id(app, "history", "History", true, None::<&str>)?;
-    let downloads = MenuItem::with_id(app, "downloads", "Downloads", true, None::<&str>)?;
-    let bookmarks = MenuItem::with_id(app, "bookmarks", "Bookmarks", true, None::<&str>)?;
-    let settings = MenuItem::with_id(app, "settings", "Settings", true, None::<&str>)?;
-    let quit = MenuItem::with_id(app, QUIT_ID, "Exit", true, None::<&str>)?;
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MenuLabels {
+    new_tab: String,
+    history: String,
+    downloads: String,
+    bookmarks: String,
+    settings: String,
+    exit: String,
+}
+
+fn build_browser_menu(app: &AppHandle, labels: &MenuLabels) -> Result<Menu<Wry>, BrowserError> {
+    let new_tab = MenuItem::with_id(app, "new-tab", &labels.new_tab, true, None::<&str>)?;
+    let history = MenuItem::with_id(app, "history", &labels.history, true, None::<&str>)?;
+    let downloads = MenuItem::with_id(app, "downloads", &labels.downloads, true, None::<&str>)?;
+    let bookmarks = MenuItem::with_id(app, "bookmarks", &labels.bookmarks, true, None::<&str>)?;
+    let settings = MenuItem::with_id(app, "settings", &labels.settings, true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, QUIT_ID, &labels.exit, true, None::<&str>)?;
     let separator_top = PredefinedMenuItem::separator(app)?;
     let separator_bottom = PredefinedMenuItem::separator(app)?;
 
@@ -32,11 +44,11 @@ fn build_browser_menu(app: &AppHandle) -> Result<Menu<Wry>, BrowserError> {
     )?)
 }
 
-// Native popup avoids being hidden behind child webviews and must run on the main thread.
+// Native popups are required on the main thread because child webviews render above the React UI.
 #[tauri::command]
-pub async fn show_browser_menu(app: AppHandle) -> Result<(), BrowserError> {
+pub async fn show_browser_menu(app: AppHandle, labels: MenuLabels) -> Result<(), BrowserError> {
     let window = main_window(&app)?;
-    let menu = build_browser_menu(&app)?;
+    let menu = build_browser_menu(&app, &labels)?;
 
     app.run_on_main_thread(move || {
         if let Err(err) = menu.popup(window) {
@@ -46,7 +58,6 @@ pub async fn show_browser_menu(app: AppHandle) -> Result<(), BrowserError> {
     Ok(())
 }
 
-// Emits menu actions to the frontend, handling only exit directly here.
 pub fn handle_menu_event(app: &AppHandle, event: MenuEvent) {
     let id = event.id().0.as_str();
 
