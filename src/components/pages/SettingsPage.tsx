@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { useDownloadsStore } from "../../store/useDownloadsStore";
 import { useHistoryStore } from "../../store/useHistoryStore";
-import { useSettingsStore } from "../../store/useSettingsStore";
+import { ThemePreference, useSettingsStore } from "../../store/useSettingsStore";
 import {
   CUSTOM_SEARCH_ENGINE_ID,
   isValidSearchTemplate,
@@ -11,16 +11,41 @@ import {
 const INPUT_CLASS =
   "w-full select-text rounded-lg border border-[#2C2C35] bg-[#141418] px-3 py-2 text-xs text-[#F4F4F6] placeholder-[#9A9AA6]/70 outline-none transition-colors focus:border-[#34D399]/70";
 
+const THEME_OPTIONS: ReadonlyArray<{ value: ThemePreference; label: string }> = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "system", label: "Match Windows" },
+];
+
 export function SettingsPage() {
   return (
     <div className="h-full w-full overflow-y-auto bg-[#111114]">
       <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-8">
         <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
+        <AppearanceSection />
         <SearchEngineSection />
         <StartupSection />
         <PrivacySection />
       </div>
     </div>
+  );
+}
+
+function AppearanceSection() {
+  const theme = useSettingsStore((state) => state.theme);
+  const setTheme = useSettingsStore((state) => state.setTheme);
+
+  return (
+    <Section title="Appearance" description="Choose how Kanso looks.">
+      {THEME_OPTIONS.map((option) => (
+        <RadioRow
+          key={option.value}
+          label={option.label}
+          checked={theme === option.value}
+          onSelect={() => setTheme(option.value)}
+        />
+      ))}
+    </Section>
   );
 }
 
