@@ -5,6 +5,7 @@ import {
   useState,
 } from "react";
 import { Plus } from "lucide-react";
+import { useTranslation } from "../../i18n/useTranslation";
 import { useBrowserStore } from "../../store/useBrowserStore";
 import { TabItem } from "./TabItem";
 
@@ -35,6 +36,7 @@ function computeTargetIndex(
 }
 
 export function TabBar() {
+  const { t } = useTranslation();
   const tabs = useBrowserStore((state) => state.tabs);
   const activeTabId = useBrowserStore((state) => state.activeTabId);
   const selectTab = useBrowserStore((state) => state.selectTab);
@@ -133,9 +135,9 @@ export function TabBar() {
         onClick={() => {
           void createTab();
         }}
-        aria-label="New tab"
-        title="New tab"
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#9A9AA6] transition-colors hover:bg-[#18181D] hover:text-[#F4F4F6]"
+        aria-label={t("newTab")}
+        title={t("newTab")}
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted transition-colors hover:bg-surface hover:text-fg"
       >
         <Plus className="h-4 w-4" />
       </button>

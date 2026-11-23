@@ -1,7 +1,9 @@
 import { ReactNode, useState } from "react";
+import { Language, TranslationKey } from "../../i18n/translations";
+import { useTranslation } from "../../i18n/useTranslation";
 import { useDownloadsStore } from "../../store/useDownloadsStore";
 import { useHistoryStore } from "../../store/useHistoryStore";
-import { useSettingsStore } from "../../store/useSettingsStore";
+import { ThemePreference, useSettingsStore } from "../../store/useSettingsStore";
 import {
   CUSTOM_SEARCH_ENGINE_ID,
   isValidSearchTemplate,
@@ -9,13 +11,28 @@ import {
 } from "../../utils/resolveInput";
 
 const INPUT_CLASS =
-  "w-full select-text rounded-lg border border-[#2C2C35] bg-[#141418] px-3 py-2 text-xs text-[#F4F4F6] placeholder-[#9A9AA6]/70 outline-none transition-colors focus:border-[#34D399]/70";
+  "w-full select-text rounded-lg border border-line bg-field px-3 py-2 text-xs text-fg placeholder-muted/70 outline-none transition-colors focus:border-accent/70";
+
+const THEME_OPTIONS: ReadonlyArray<{ value: ThemePreference; labelKey: TranslationKey }> = [
+  { value: "light", labelKey: "themeLight" },
+  { value: "dark", labelKey: "themeDark" },
+  { value: "system", labelKey: "themeSystem" },
+];
+
+const LANGUAGE_OPTIONS: ReadonlyArray<{ value: Language; name: string }> = [
+  { value: "en", name: "English" },
+  { value: "pt", name: "Português" },
+];
 
 export function SettingsPage() {
+  const { t } = useTranslation();
+
   return (
-    <div className="h-full w-full overflow-y-auto bg-[#111114]">
+    <div className="h-full w-full overflow-y-auto bg-chrome">
       <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-8">
-        <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
+        <h1 className="text-xl font-semibold tracking-tight">{t("settings")}</h1>
+        <AppearanceSection />
+        <LanguageSection />
         <SearchEngineSection />
         <StartupSection />
         <PrivacySection />
@@ -24,14 +41,58 @@ export function SettingsPage() {
   );
 }
 
+function AppearanceSection() {
+  const { t } = useTranslation();
+  const theme = useSettingsStore((state) => state.theme);
+  const setTheme = useSettingsStore((state) => state.setTheme);
+
+  return (
+    <Section title={t("appearance")} description={t("appearanceDescription")}>
+      {THEME_OPTIONS.map((option) => (
+        <RadioRow
+          key={option.value}
+          label={t(option.labelKey)}
+          checked={theme === option.value}
+          onSelect={() => setTheme(option.value)}
+        />
+      ))}
+    </Section>
+  );
+}
+
+function LanguageSection() {
+  const { t } = useTranslation();
+  const language = useSettingsStore((state) => state.language);
+  const setLanguage = useSettingsStore((state) => state.setLanguage);
+
+  return (
+    <Section title={t("language")} description={t("languageDescription")}>
+      <RadioRow
+        label={t("languageAuto")}
+        checked={language === "system"}
+        onSelect={() => setLanguage("system")}
+      />
+      {LANGUAGE_OPTIONS.map((option) => (
+        <RadioRow
+          key={option.value}
+          label={option.name}
+          checked={language === option.value}
+          onSelect={() => setLanguage(option.value)}
+        />
+      ))}
+    </Section>
+  );
+}
+
 function SearchEngineSection() {
+  const { t } = useTranslation();
   const engineId = useSettingsStore((state) => state.searchEngineId);
   const setSearchEngine = useSettingsStore((state) => state.setSearchEngine);
 
   return (
     <Section
-      title="Search engine"
-      description="Used by the address bar and the new tab page."
+      title={t("searchEngine")}
+      description={t("searchEngineDescription")}
     >
       {SEARCH_ENGINES.map((engine) => (
         <RadioRow
@@ -43,7 +104,7 @@ function SearchEngineSection() {
       ))}
 
       <RadioRow
-        label="Custom"
+        label={t("custom")}
         checked={engineId === CUSTOM_SEARCH_ENGINE_ID}
         onSelect={() => setSearchEngine(CUSTOM_SEARCH_ENGINE_ID)}
       >
@@ -54,6 +115,7 @@ function SearchEngineSection() {
 }
 
 function CustomEngineField() {
+  const { t } = useTranslation();
   const customSearchUrl = useSettingsStore((state) => state.customSearchUrl);
   const setCustomSearchUrl = useSettingsStore((state) => state.setCustomSearchUrl);
   const isInvalid = !isValidSearchTemplate(customSearchUrl);
@@ -67,30 +129,31 @@ function CustomEngineField() {
         placeholder="https://example.com/search?q=%s"
         className={INPUT_CLASS}
       />
-      <p className={`text-[11px] ${isInvalid ? "text-[#F87171]" : "text-[#9A9AA6]"}`}>
+      <p className={`text-[11px] ${isInvalid ? "text-danger" : "text-muted"}`}>
         {isInvalid
-          ? "Enter an http(s) address with %s where the search terms go. Until then, DuckDuckGo is used."
-          : "%s is replaced by what you type."}
+          ? t("customSearchInvalid")
+          : t("customSearchHint")}
       </p>
     </div>
   );
 }
 
 function StartupSection() {
+  const { t } = useTranslation();
   const startupMode = useSettingsStore((state) => state.startupMode);
   const homepageUrl = useSettingsStore((state) => state.homepageUrl);
   const setStartupMode = useSettingsStore((state) => state.setStartupMode);
   const setHomepageUrl = useSettingsStore((state) => state.setHomepageUrl);
 
   return (
-    <Section title="On startup" description="What Kanso shows when it opens.">
+    <Section title={t("startup")} description={t("startupDescription")}>
       <RadioRow
-        label="Open the new tab page"
+        label={t("startupNewTab")}
         checked={startupMode === "newtab"}
         onSelect={() => setStartupMode("newtab")}
       />
       <RadioRow
-        label="Open a specific page"
+        label={t("startupHomepage")}
         checked={startupMode === "homepage"}
         onSelect={() => setStartupMode("homepage")}
       >
@@ -107,19 +170,20 @@ function StartupSection() {
 }
 
 function PrivacySection() {
+  const { t } = useTranslation();
   const saveHistory = useSettingsStore((state) => state.saveHistory);
   const setSaveHistory = useSettingsStore((state) => state.setSaveHistory);
 
   return (
-    <Section title="Privacy">
-      <div className="flex items-center justify-between rounded-lg border border-[#24242C] bg-[#18181D] px-3 py-2.5">
+    <Section title={t("privacy")}>
+      <div className="flex items-center justify-between rounded-lg border border-line bg-surface px-3 py-2.5">
         <div>
-          <p className="text-xs">Save browsing history</p>
-          <p className="text-[11px] text-[#9A9AA6]">
-            Turning this off does not delete existing history.
+          <p className="text-xs">{t("saveHistory")}</p>
+          <p className="text-[11px] text-muted">
+            {t("saveHistoryHint")}
           </p>
         </div>
-        <Toggle checked={saveHistory} label="Save browsing history" onChange={setSaveHistory} />
+        <Toggle checked={saveHistory} label={t("saveHistory")} onChange={setSaveHistory} />
       </div>
 
       <ClearDataCard />
@@ -128,6 +192,7 @@ function PrivacySection() {
 }
 
 function ClearDataCard() {
+  const { t } = useTranslation();
   const clearHistory = useHistoryStore((state) => state.clear);
   const clearDownloads = useDownloadsStore((state) => state.clear);
 
@@ -147,16 +212,16 @@ function ClearDataCard() {
   };
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-[#24242C] bg-[#18181D] px-3 py-3">
-      <p className="text-xs">Clear browsing data</p>
+    <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface px-3 py-3">
+      <p className="text-xs">{t("clearBrowsingData")}</p>
 
       <Checkbox
-        label="Browsing history"
+        label={t("browsingHistory")}
         checked={includeHistory}
         onChange={toggle(setIncludeHistory)}
       />
       <Checkbox
-        label="Download list (files stay on disk)"
+        label={t("downloadList")}
         checked={includeDownloads}
         onChange={toggle(setIncludeDownloads)}
       />
@@ -166,11 +231,11 @@ function ClearDataCard() {
           type="button"
           onClick={handleClear}
           disabled={!includeHistory && !includeDownloads}
-          className="rounded-lg border border-[#2C2C35] bg-[#222229] px-3.5 py-1.5 text-xs font-medium transition-colors hover:border-[#F87171]/60 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-lg border border-line bg-active px-3.5 py-1.5 text-xs font-medium transition-colors hover:border-danger/60 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Clear data
+          {t("clearData")}
         </button>
-        {wasCleared && <span className="text-[11px] text-[#34D399]">Done</span>}
+        {wasCleared && <span className="text-[11px] text-accent">{t("done")}</span>}
       </div>
     </div>
   );
@@ -187,7 +252,7 @@ function Section({ title, description, children }: SectionProps) {
     <section className="flex flex-col gap-2.5">
       <div>
         <h2 className="text-sm font-medium">{title}</h2>
-        {description && <p className="text-xs text-[#9A9AA6]">{description}</p>}
+        {description && <p className="text-xs text-muted">{description}</p>}
       </div>
       {children}
     </section>
@@ -203,8 +268,8 @@ interface RadioRowProps {
 
 function RadioRow({ label, checked, onSelect, children }: RadioRowProps) {
   const surface = checked
-    ? "border-[#34D399]/50 bg-[#34D399]/5"
-    : "border-[#24242C] bg-[#18181D]";
+    ? "border-accent/50 bg-accent/5"
+    : "border-line bg-surface";
 
   return (
     <div className={`rounded-lg border px-3 py-2.5 transition-colors ${surface}`}>
@@ -217,10 +282,10 @@ function RadioRow({ label, checked, onSelect, children }: RadioRowProps) {
       >
         <span
           className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border ${
-            checked ? "border-[#34D399]" : "border-[#9A9AA6]/60"
+            checked ? "border-accent" : "border-muted/60"
           }`}
         >
-          {checked && <span className="h-1.5 w-1.5 rounded-full bg-[#34D399]" />}
+          {checked && <span className="h-1.5 w-1.5 rounded-full bg-accent" />}
         </span>
         <span>{label}</span>
       </button>
@@ -245,11 +310,11 @@ function Toggle({ checked, label, onChange }: ToggleProps) {
       aria-label={label}
       onClick={() => onChange(!checked)}
       className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
-        checked ? "bg-[#34D399]" : "bg-[#2C2C35]"
+        checked ? "bg-accent" : "bg-line"
       }`}
     >
       <span
-        className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-[#F4F4F6] transition-transform ${
+        className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
           checked ? "translate-x-4" : ""
         }`}
       />
@@ -270,7 +335,7 @@ function Checkbox({ label, checked, onChange }: CheckboxProps) {
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="h-3.5 w-3.5 accent-[#34D399]"
+        className="h-3.5 w-3.5 accent-accent"
       />
       {label}
     </label>

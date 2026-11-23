@@ -1,10 +1,12 @@
 import { ArrowLeft, ArrowRight, RotateCw } from "lucide-react";
+import { useTranslation } from "../../i18n/useTranslation";
 import { useBrowserStore } from "../../store/useBrowserStore";
 
 const BUTTON_CLASS =
-  "rounded-md p-1.5 text-[#9A9AA6] transition-colors hover:bg-[#18181D] hover:text-[#F4F4F6] disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-[#9A9AA6]";
+  "rounded-md p-1.5 text-muted transition-colors hover:bg-surface hover:text-fg disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-muted";
 
 export function NavControls() {
+  const { t } = useTranslation();
   const goBack = useBrowserStore((state) => state.goBack);
   const goForward = useBrowserStore((state) => state.goForward);
   const controlActiveTab = useBrowserStore((state) => state.controlActiveTab);
@@ -26,8 +28,8 @@ export function NavControls() {
           void goBack();
         }}
         disabled={!canGoBack}
-        aria-label="Back"
-        title="Back"
+        aria-label={t("back")}
+        title={t("back")}
         className={BUTTON_CLASS}
       >
         <ArrowLeft className="h-4 w-4" />
@@ -38,8 +40,8 @@ export function NavControls() {
           void goForward();
         }}
         disabled={!canGoForward}
-        aria-label="Forward"
-        title="Forward"
+        aria-label={t("forward")}
+        title={t("forward")}
         className={BUTTON_CLASS}
       >
         <ArrowRight className="h-4 w-4" />
@@ -49,8 +51,8 @@ export function NavControls() {
         onClick={() => {
           void controlActiveTab("reload");
         }}
-        aria-label="Reload"
-        title="Reload"
+        aria-label={t("reload")}
+        title={t("reload")}
         className={BUTTON_CLASS}
       >
         <RotateCw className="h-4 w-4" />

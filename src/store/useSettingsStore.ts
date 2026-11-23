@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { LanguagePreference } from "../i18n/translate";
 import {
   DEFAULT_SEARCH_ENGINE_ID,
   resolveSearchEngine,
@@ -7,14 +8,19 @@ import {
 } from "../utils/resolveInput";
 
 export type StartupMode = "newtab" | "homepage";
+export type ThemePreference = "light" | "dark" | "system";
 
 interface SettingsState {
+  theme: ThemePreference;
+  language: LanguagePreference;
   searchEngineId: string;
   customSearchUrl: string;
   searchSuggestions: boolean;
   saveHistory: boolean;
   startupMode: StartupMode;
   homepageUrl: string;
+  setTheme: (theme: ThemePreference) => void;
+  setLanguage: (language: LanguagePreference) => void;
   setSearchEngine: (id: string) => void;
   setCustomSearchUrl: (url: string) => void;
   setSearchSuggestions: (enabled: boolean) => void;
@@ -26,12 +32,16 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
+      theme: "system",
+      language: "system",
       searchEngineId: DEFAULT_SEARCH_ENGINE_ID,
       customSearchUrl: "",
       searchSuggestions: true,
       saveHistory: true,
       startupMode: "newtab",
       homepageUrl: "",
+      setTheme: (theme) => set({ theme }),
+      setLanguage: (language) => set({ language }),
       setSearchEngine: (id) => set({ searchEngineId: id }),
       setCustomSearchUrl: (url) => set({ customSearchUrl: url }),
       setSearchSuggestions: (enabled) => set({ searchSuggestions: enabled }),
@@ -43,7 +53,7 @@ export const useSettingsStore = create<SettingsState>()(
   ),
 );
 
-/** Non-reactive read, for store actions and event handlers. */
+// Non-reactive read, for store actions and event handlers.
 export function getActiveSearchEngine(): SearchEngine {
   const { searchEngineId, customSearchUrl } = useSettingsStore.getState();
   return resolveSearchEngine(searchEngineId, customSearchUrl);

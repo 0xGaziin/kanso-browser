@@ -25,6 +25,15 @@ export interface DownloadFinishedEvent {
   success: boolean;
 }
 
+export interface MenuLabels {
+  newTab: string;
+  history: string;
+  downloads: string;
+  bookmarks: string;
+  settings: string;
+  exit: string;
+}
+
 // Logical pixel bounds relative to the browser window.
 export interface OverlayRect {
   x: number;
@@ -61,7 +70,7 @@ export const browserApi = {
   control: (tabId: string, action: NavigationAction) =>
     invoke<void>("control_tab_webview", { tabId, action }),
 
-  showMenu: () => invoke<void>("show_browser_menu"),
+  showMenu: (labels: MenuLabels) => invoke<void>("show_browser_menu", { labels }),
 
   openDownload: (path: string) => invoke<void>("open_download", { path }),
 
