@@ -39,7 +39,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZGNDA2MDhCNkJCNzUxQjgKUldTNFViZHJpMkJBLzBEcmZBcmZ3YzcrZDdmS09OYkNzSlRyTFJkNWM0UGcrRVBrem5LcUJVVk8K",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDBBQjczODUyNEM2RTZGREUKUldUZWIyNU1VamkzQ3ZKcTN4NDNqcFY3Nkd4YkJCRWE0eGR2MTlISEdIOWNFZ0ZuWlo0YWduSHoK",
       "endpoints": [
         "https://github.com/0xGaziin/kanso-browser/releases/latest/download/latest.json"
       ],
