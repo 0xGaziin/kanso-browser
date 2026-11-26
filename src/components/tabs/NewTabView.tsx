@@ -62,7 +62,7 @@ export function NewTabView() {
             K
           </div>
           <span className="text-base font-semibold tracking-tight text-fg">
-            Kanso
+            Kanso v0.1.1
           </span>
         </div>
 

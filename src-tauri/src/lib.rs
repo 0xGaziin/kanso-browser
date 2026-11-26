@@ -19,6 +19,8 @@ use crate::tabs::{sync_active_webview_bounds, MAIN_WINDOW_LABEL};
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .manage(BrowserState::default())
         .manage(OverlayState::default())
         .manage(SuggestionClient::new())
