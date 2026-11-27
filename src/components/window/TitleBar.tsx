@@ -8,7 +8,7 @@ export function TitleBar() {
       <TabBar />
 
       {/* Only this spacer drags the window so tabs and window controls remain clickable. */}
-      <div data-tauri-drag-region className="min-w-8 flex-1" />
+      <div data-tauri-drag-region className="w-8 shrink-0" />
 
       <WindowControls />
     </div>

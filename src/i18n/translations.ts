@@ -13,6 +13,8 @@ const en = {
   menu: "Menu",
   exit: "Exit",
   trackersBlocked: "Trackers blocked in this tab: {count}",
+  scrollTabsLeft: "Scroll tabs left",
+  scrollTabsRight: "Scroll tabs right",
 
   // Window controls
   minimize: "Minimize",
@@ -127,6 +129,8 @@ export const translations: Record<Language, Record<TranslationKey, string>> = {
     menu: "Menu",
     exit: "Sair",
     trackersBlocked: "Rastreadores bloqueados nesta aba: {count}",
+    scrollTabsLeft: "Rolar abas para a esquerda",
+    scrollTabsRight: "Rolar abas para a direita",
 
     // Window controls
     minimize: "Minimizar",
